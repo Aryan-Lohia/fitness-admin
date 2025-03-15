@@ -73,8 +73,8 @@ const ClientData = () => {
     { id: 'name', label: 'Name', required: true },
     { id: 'dob', label: 'Date of Birth', type: 'date', required: true },
     { id: 'gender', label: 'Gender', type: 'select', options: ['Male', 'Female', 'Other'], required: true },
-    { id: 'medical_categories', label: 'Medical Categories', },
-    { id: 'status', label: 'Status', type: 'select', options: ['Active', 'Retired', 'Reserved'], required: true }
+    { id: 'status', label: 'Status', type: 'select', options: ['Active', 'Retired', 'Reserved'], required: true },
+    { id: 'medical_categories', type: 'array', label: 'Medical Category', },
   ];
 
   useEffect(() => {
@@ -385,7 +385,32 @@ const ClientData = () => {
                     />
                   )}
                 />
-              ) : (
+              ) : field.type === 'array' ? (
+                <Box>
+                  {[...Array(5)].map((_, index) => (
+                    <TextField
+                      key={index}
+                      fullWidth
+                      label={`${field.label} ${index + 1}`}
+                      value={selectedClient[field.id]?.[index] || ''}
+                      onChange={(e) => {
+                        const newArray = [...(selectedClient[field.id] || [])];
+                        newArray[index] = e.target.value;
+                        handleClientDetailChange(field.id, newArray);
+                      }}
+                      sx={{
+                        marginBottom: index === 4 ? 0 : 2,
+                        '& .MuiOutlinedInput-root': {
+                          color: '#ffffff',
+                          '& fieldset': { borderColor: '#ffffff' },
+                          '&:hover fieldset': { borderColor: '#ff4444' },
+                        },
+                        '& .MuiInputLabel-root': { color: '#ffffff' }
+                      }}
+                    />
+                  ))}
+                </Box>
+              ): (
                 <TextField
                   fullWidth
                   label={field.label}

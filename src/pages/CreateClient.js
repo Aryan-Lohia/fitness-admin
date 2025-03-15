@@ -227,7 +227,7 @@ export default function CreateClient({ onSuccess, onCancel }) {
                     '& .MuiInputLabel-root': { color: '#ff8888' }
                   }}
                 >
-                  {['male', 'female', 'other'].map((option) => (
+                  {['Male', 'Female', 'Other'].map((option) => (
                     <MenuItem 
                       key={option} 
                       value={option}

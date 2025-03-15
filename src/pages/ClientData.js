@@ -21,7 +21,6 @@ import { ArrowBack, Lock } from '@mui/icons-material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getDataTypes, recordClientData, updateClientDetails, getClientById, fetchDataByDate, changeClientPassword, deleteClient } from '../services/api';
 import { getClientsWithAlerts } from '../services/analysisApi';
-
 const groupByCategory = (dataTypes) => {
   const groupedDataTypes = dataTypes.reduce((acc, type) => {
     const category = type.category || 'General';
@@ -29,7 +28,27 @@ const groupByCategory = (dataTypes) => {
     acc[category].push(type);
     return acc;
   }, {});
-  return groupedDataTypes;
+
+  const sortedCategories = [
+    'Demographics',
+    'Vitals',
+    'Lifestyle',
+    'Family History',
+    'Hematology',
+    'Diabetes',
+    'Cardiac & Liver',
+    'Liver',
+    'Kidney'
+  ];
+
+  const sortedGroupedDataTypes = {};
+  sortedCategories.forEach(category => {
+    if (groupedDataTypes[category]) {
+      sortedGroupedDataTypes[category] = groupedDataTypes[category];
+    }
+  });
+
+  return sortedGroupedDataTypes;
 };
 
 const ClientData = () => {
@@ -54,6 +73,7 @@ const ClientData = () => {
     { id: 'name', label: 'Name', required: true },
     { id: 'dob', label: 'Date of Birth', type: 'date', required: true },
     { id: 'gender', label: 'Gender', type: 'select', options: ['Male', 'Female', 'Other'], required: true },
+    { id: 'medical_categories', label: 'Medical Categories', },
     { id: 'status', label: 'Status', type: 'select', options: ['Active', 'Retired', 'Reserved'], required: true }
   ];
 
